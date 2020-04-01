@@ -1,0 +1,61 @@
+NAME: Henry MacArthur
+EMAIL: HenryMac16@gmail.com
+ID: 705096169
+
+
+Link used for getopt: arguement parsing:
+https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+https://linux.die.net/man/3/getopt_long
+
+Links for Signal:
+http://man7.org/linux/man-pages/man2/signal.2.html
+https://www.tutorialspoint.com/c_standard_library/c_function_signal.htm
+
+
+--------------------
+main.c:
+    This file contains the C code for the project
+    supoports the flags --input which selects input file
+    --output which selects the output file
+    --segfault which forces a segmentation fault
+    --catch which looks for a seg fault and catches input
+
+Makefile:
+    - run make or make defualt to compile and build to C program which creates lab0 executable
+    - make check runs the smoke test suite written in bash
+        - test_ok_copy
+            -runs ./lab0 with a input and output file
+            -checks to make sure contents of the two files end up identical
+            -checks to make sure the exit staus is 0
+            -responds accordingly if the above output is correct or not
+        - test_bad_arg
+            -runs ./lab0 --random 
+            -   --random is not a supported flag so I expect an error
+                to be thrown
+            - checks to make sure exit command is 1 as expected
+        - test_bad_out
+            - creates a file and revokes its read and write access
+            - runs ./lab0 --output=badfile
+            - tries to open a un-openable file so we expect an error
+            - checks to make sure exit code is 3 as expected
+        - test_bad_input
+            - runs ./lab0 --input=file_that_does_not_exist
+            - tries to open a file that does not exist for input
+            - we expect an error as this file is nonexistant
+            - check to make sure exit code is 2 as expected
+        - test_seg_fault
+            - runs ./lab0 --segfault --catch
+            - we are forcing a segfault but we expect it to be caught
+            - the catch flag will run only if a seg fault is created
+            - this test will ultimately test both catch and segfault
+            - we expect the segfault to be caught and report an error
+            - check to see if the exit code is 4 as expected
+    - overall this make check tests to make sure all of the 5 (0-4)
+    exit codes occur as expected and can be recreated. Makes sure all errors
+    are properly reported and the program runs successfully when 
+    expected
+
+
+-I used the .SILENT feeature so that the makefile did not 
+say every command run
+

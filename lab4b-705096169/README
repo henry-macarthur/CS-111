@@ -1,0 +1,24 @@
+NAME: HENRY MACARTHUR
+EMAIL: HENRYMAC16@GMAIL.COM
+ID: 705096169
+
+lab4b.c
+	this contains the implementation of the project spec.
+	It reads data from the temp sensor, and outputs it to
+	stdin and log file if specified. It allows a user to specify
+	the period, logfile, and temp scale at execution time.
+	Durring run time. a user can change the temp scale, the sample
+	period, log messages, start and stop data sampling, and turn off
+	the program.
+
+Makefile:
+	default: builds .c into lab4 executable
+	clean: remove the temporary files creates
+	check: run the smoke test
+
+SmokeTest.sh:
+	shell script that tests basic functionality of the program.
+	Tests to make sure one can enter commands at execution and
+	run-time. Makes sure that logging of data and commands to stdout and
+	log files is correct. Checks proper exit codes with successful and
+	unsuccessful runs.

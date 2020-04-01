@@ -1,0 +1,8 @@
+NAME: Derek Vance, Henry MacArthur
+EMAIL: dvance@g.ucla.edu, hernymac16@gmail.com
+ID: 604970765, 705096169
+
+Contents of the tarball contain:
+    lab3b.py: this examines a .csv file and outputs any errors related to corrupted or incorrect file system data. Must pass in a valid .csv file as only argument
+    Makefile: when default is called, this creates a link to our program lab3b, clean: removes temp files, dist: build tarball
+    README

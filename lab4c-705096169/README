@@ -1,0 +1,21 @@
+NAME: HENRY MACARTHUR
+EMAIL: HenryMac16@gmail.com
+ID: 705096169
+
+Contains:
+	Makefile: default builds both of the following targets, clean, and distinct that builds the tarball
+
+	lab4c_tcp.c: this has the beagle bone connect to a given server and port over a TCP connection. Communicates by sending
+		current temps and takes command input to change time, temp readings, start, stop, etc
+
+	lab4c_tls.c: this has the beagle bone connect to a given server and port over a TCP connection and uses tls 
+		 for secure communication between the client and the server. Communicates by sending
+		current temps and takes command input to change time, temp readings, start, stop, etc
+	README
+
+Both of the c files allow a user to specify period, scale, id, host, and a log option, and a port number
+
+On connection, both of these send an initial connection message of the student ID passed in, and then sends data over to the server and 
+gets server data and processes it. To stop the program, send SHUTDOWN.
+
+	

@@ -1,0 +1,12 @@
+NAME: Derek Vance, Henry MacArthur
+EMAIL: dvance@g.ucla.edu, henrymac16@gmail.com
+ID: 604970765, 705096169
+
+files included:
+    lab3a.c - source code for a program that takes as input an image file, then outputs a report on its contents, including 
+    information about its superblock, group summary, inodes, directory entries, direct entries and indirect entries.
+
+    Makefile: supports a default target theat builds the .c file. clean that removes temporary files, and a dist that builds a tarball
+
+
+To do this project, we used the EXT2 file system documentation and debugfs to figure out proper behavior and results.

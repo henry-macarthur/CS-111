@@ -1,0 +1,126 @@
+Total: 1298 samples
+     591  45.5%  45.5%      662  51.0% insert_elements
+     549  42.3%  87.8%      631  48.6% remove_elements
+      29   2.2%  90.1%       29   2.2% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:200
+      25   1.9%  92.0%       25   1.9% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:165
+      20   1.5%  93.5%       82   6.3% SortedList_lookup
+      14   1.1%  94.6%       14   1.1% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:1721
+       9   0.7%  95.3%        9   0.7% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:205
+       8   0.6%  95.9%        8   0.6% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:1720
+       8   0.6%  96.5%        8   0.6% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:1729
+       8   0.6%  97.1%       71   5.5% SortedList_insert
+       7   0.5%  97.7%        7   0.5% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:204
+       5   0.4%  98.1%        5   0.4% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:130
+       4   0.3%  98.4%        4   0.3% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:203
+       4   0.3%  98.7%        4   0.3% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:1714
+       4   0.3%  99.0%        4   0.3% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:1730
+       3   0.2%  99.2%        3   0.2% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:202
+       3   0.2%  99.5%        3   0.2% _init
+       3   0.2%  99.7%        4   0.3% _int_malloc
+       1   0.1%  99.8%        1   0.1% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:134
+       1   0.1%  99.8%        1   0.1% ?? /usr/src/debug////////glibc-2.17-c758a686/string/../sysdeps/x86_64/multiarch/strcmp-sse42.S:160
+       1   0.1%  99.9%        1   0.1% get_lengths
+       1   0.1% 100.0%        1   0.1% sysmalloc
+       0   0.0% 100.0%     1294  99.7% ?? /usr/src/debug////////glibc-2.17-c758a686/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+       0   0.0% 100.0%        4   0.3% __GI___libc_malloc
+       0   0.0% 100.0%        4   0.3% __libc_start_main
+       0   0.0% 100.0%        4   0.3% _start
+       0   0.0% 100.0%     1294  99.7% helperfunc
+       0   0.0% 100.0%        4   0.3% main
+       0   0.0% 100.0%     1294  99.7% start_thread
+ROUTINE ====================== helperfunc in /u/cs/ugrad/macarthu/Desktop/CS111/Project2B/lab2_list.c
+     0   1294 Total samples (flat / cumulative)
+     .      .  423:     return length;
+     .      .  424: }
+     .      .  425: 
+     .      .  426: //so the whole idea is that we want to lock each list head
+     .      .  427: void * helperfunc(void * ptr)
+---
+     .      .  428: {
+     .      .  429:     SortedListElement_t * start = (SortedListElement_t *)ptr;
+     .      .  430:     // struct timespec thread_time_start, thread_time_end;
+     .      .  431:     //use these, pass them into each of the functions
+     .      .  432:     long long total_time = 0;
+     .      .  433:     // if(clock_gettime(CLOCK_REALTIME, &thread_time_start) < 0)
+     .      .  434:     //     raise_err();
+     .      .  435: 
+     .      .  436:     //have the lock, start the timer
+     .    662  437:     total_time += insert_elements(start); //insert the respective items
+     .      .  438:     //fprintf(stderr, "mmmm \n");
+     .      .  439:     
+     .      .  440:     // else if(is_sync && sync_option == 's')
+     .      .  441:     // {
+     .      .  442:     //     while(__sync_lock_test_and_set(&global_sync_lock, 1));
+     .      .  443:     // }
+     .      1  444:     int length = get_lengths(&total_time);
+     .      .  445:     // //replace this with the get_length function
+     .      .  446:     // int length = SortedList_length(list_head); //this is going to be different as well
+     .      .  447:     if(length == -1)
+     .      .  448:     {
+     .      .  449:         print_err("list corruption");
+     .      .  450:     }
+     .      .  451: 
+     .    631  452:     total_time += remove_elements(start);
+     .      .  453:     // else if(is_sync && sync_option == 's')
+     .      .  454:     // {
+     .      .  455:     //     __sync_lock_release(&global_sync_lock);
+     .      .  456:     // }
+     .      .  457: 
+     .      .  458:     // if(clock_gettime(CLOCK_REALTIME, &thread_time_end) < 0)
+     .      .  459:     //     raise_err();
+     .      .  460:     
+     .      .  461:     
+     .      .  462:     // if(is_sync)
+     .      .  463:     //     total_time = (1000000000L * (thread_time_end.tv_sec - thread_time_start.tv_sec) + thread_time_end.tv_nsec - thread_time_start.tv_nsec) / 3;
+     .      .  464: 
+     .      .  465:     return (void *)total_time;
+     .      .  466: 
+---
+ROUTINE ====================== helperfunc in /u/cs/ugrad/macarthu/Desktop/CS111/Project2B/lab2_list.c
+     0   1294 Total samples (flat / cumulative)
+     .      .  423:     return length;
+     .      .  424: }
+     .      .  425: 
+     .      .  426: //so the whole idea is that we want to lock each list head
+     .      .  427: void * helperfunc(void * ptr)
+---
+     .      .  428: {
+     .      .  429:     SortedListElement_t * start = (SortedListElement_t *)ptr;
+     .      .  430:     // struct timespec thread_time_start, thread_time_end;
+     .      .  431:     //use these, pass them into each of the functions
+     .      .  432:     long long total_time = 0;
+     .      .  433:     // if(clock_gettime(CLOCK_REALTIME, &thread_time_start) < 0)
+     .      .  434:     //     raise_err();
+     .      .  435: 
+     .      .  436:     //have the lock, start the timer
+     .    662  437:     total_time += insert_elements(start); //insert the respective items
+     .      .  438:     //fprintf(stderr, "mmmm \n");
+     .      .  439:     
+     .      .  440:     // else if(is_sync && sync_option == 's')
+     .      .  441:     // {
+     .      .  442:     //     while(__sync_lock_test_and_set(&global_sync_lock, 1));
+     .      .  443:     // }
+     .      1  444:     int length = get_lengths(&total_time);
+     .      .  445:     // //replace this with the get_length function
+     .      .  446:     // int length = SortedList_length(list_head); //this is going to be different as well
+     .      .  447:     if(length == -1)
+     .      .  448:     {
+     .      .  449:         print_err("list corruption");
+     .      .  450:     }
+     .      .  451: 
+     .    631  452:     total_time += remove_elements(start);
+     .      .  453:     // else if(is_sync && sync_option == 's')
+     .      .  454:     // {
+     .      .  455:     //     __sync_lock_release(&global_sync_lock);
+     .      .  456:     // }
+     .      .  457: 
+     .      .  458:     // if(clock_gettime(CLOCK_REALTIME, &thread_time_end) < 0)
+     .      .  459:     //     raise_err();
+     .      .  460:     
+     .      .  461:     
+     .      .  462:     // if(is_sync)
+     .      .  463:     //     total_time = (1000000000L * (thread_time_end.tv_sec - thread_time_start.tv_sec) + thread_time_end.tv_nsec - thread_time_start.tv_nsec) / 3;
+     .      .  464: 
+     .      .  465:     return (void *)total_time;
+     .      .  466: 
+---

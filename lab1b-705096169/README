@@ -1,0 +1,38 @@
+NAME: Henry MacArthur
+ID: 705096169
+EMAIL: HenryMac16@gmail.com
+
+lab1b-server.c:
+    As the name implies, this holds the code for the server. When created,
+    the server opens a socket for TCP transmission, and waits for a client to 
+    connect before continuing. When a client connects, this program forks a child
+    process(/bin/bash) and forwards input read over the socket to the shell. It then 
+    takes the output from running that command and sends it back over the same socket 
+    so the client can process the output. if the --compress option is specified, the
+    server uses zlib to decompress data read from the client, and compresses data
+    sent to the client.
+
+lab1b-client.c:
+    This holds the code for the client implementation. When running, this 
+    program requires the --port flag, which should be equal to the port of the
+    server that a user wants to communicate with. This program reads input 
+    the user enters via keyboard, and sends it to the server via the socket it is 
+    connected to. In addition to reading from stdin and writing to the socket, the
+    client also reads from the socket, and outputs the data sent back from the server 
+    which is usually the output of its input run on /bin/bash on the server. if the 
+    --log flag is present, the program will record all incoming and outgoing data in 
+    the specified log file. The --compress flag will use zlib to compress all outgoing data
+    and decompress all incoming data.
+
+Makefile:
+    make default   -> this generates executables lab1b-client and lab1b-server  
+    make clean     -> removes temp files (.tar.gz and executables producled)
+    make dist      -> generates a .tar.gz file containing the .c files, Makefile, and README
+    make server    -> compiles lab1b-server.c into lab1b-server
+    make client    -> compiles lab1b-client.c into lab1b-client
+
+When working on this program, i found the supplied man pages to be very useful.
+In addition, much of my TCP socket code is directly adapted from the example provided
+on the spec. In addition, much of my zlib code is adapted from the ZLIB C tutorial
+but I found that Z_SYNC_FLUSH, when provided with inflate, consistently produced the 
+most desirable output.

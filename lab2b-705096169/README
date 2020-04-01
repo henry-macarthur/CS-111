@@ -1,0 +1,94 @@
+NAME: Henry MacArthur
+ID: 705096169
+EMAIL: HenryMac16@gmail.com
+
+Contents:
+    Makefile:
+        dist: 
+            build tarball
+        profile: generate cpu profile
+        default: build c program into lab2_list
+        clean: remove temp Contents
+        tests: run all test cases, generate csv filte
+        graphs: greate png graphs from csv file
+
+    README
+    lab2_list.c: this contains the implementation of the project spec. It allows the users 
+    to input a number of threads, number of iterations, and a number of list paritions. It also 
+    supports yields, mutexes, and sync locks. 
+
+    profile.out: contains the data of running the getperftools cpu profiler
+
+    lab2_list.gp: generate the graphs from data of the .csv files
+
+    SortedList.c: implementation of the doubly linked list
+    SortedList.h: defines the linked li st implementation
+    lab2b_list.csv: contains the contents of running the test script
+
+2.3.1
+        I think most of the cycles for the 1 and 2 thread lists are spent actually doing operations.
+    Since there is little competition between threads, there is little contention for the list(critical section),
+    so each thread doses not have to wait a long time to accquire locks, and can then spend more time
+    doing actual list operations. Most overhead is spent creating and joining threads, and locking
+        These are the most expensive parts of the code because a thread either gets put to sleep, and there
+    is an expensive overhead with doing so, or a thread just idles wasting cpu cycles, both of which produce 
+    a expensive cost.
+        In high thread spin lock tests, most of the time is spent idling. When many threads are competing
+    for the same resource, they have to spend a long time idling while they wait for the lock to the critical
+    section to be given up
+        In high thread mutex lock tests, i would say that most of the cpu cycles are actually spent
+    performing operations on the list. Since threads do not idle, and are just put to sleep until they 
+    can accquire the lock, they do not waste much cpu time waiting for a resource besides the cost of a 
+    context switch. Since little time(constant) is actually spent waiting for the lock, the thread in turn spends
+    most of its time(O(n^2) complexity) working on the list, performing add, lookup, and delete operations.
+
+2.3.2
+    The lines of code that are consuming the most ammount of
+    cycles in the spin lock implementation, when run with a high 
+    number of threads, is the one that deals with grabbing or idling
+    for the spin lock:
+        while(__sync_lock_test_and_set(&global_sync_lock, 1));
+    The reason why this consumes the most amount of cycles when run 
+    with a large number of threads is because it forces each thread to idle
+    when it cannot get the lock. When there are a large number of threads
+    competing for the same resource, number of threads waiting is longer, meaning
+    each thread has to wait(idle the cpu) for a longer period of time.
+    With a lot of threads, this idle cost becomes very expensive and slows
+    performance down.
+
+2.3.3
+            The reason why the average lock wait time rise so dramatically with increased
+        contending thread count is because more threads means more contention for the shared
+        resource. As we increase the number of threads, we have more threads all trying to access 
+        the list, meaning when a thread cannot get the lock, it is blocked for longer periods of time 
+        as more threads are trying to use the resource and are also waiting for the lock to be freed.
+            This is because operation timing/completion time do not really have much to do with the time
+        it takes to accquire a lock. Operation timing has to do more with how fast the operations can be run 
+        on the cpu. While adding more threads increases the contention for the lock, increasing wait time, average operation
+        time stays reletively stable because operations still run on the cpu at the same rate, but rises a little because
+        our calculations do not fully filter out the overhead of context switches and locking, so they do have some
+        effect on our datasets. While there is still contention, work is still being done by threads.
+            wait time goes up because it directly depeneds on the number of running threads, as the number of running
+        threads determines how many threads are competing for the same resource, and more running threads
+        therefore means that each thread has to wait longer before
+        they can enter the critical section. Operation timing scales much slower as it does not really relate to the 
+        number of threads running, and has more to do with the cpu than the number of threads as the cpu is what 
+        actually runs the operations.
+
+2.3.4
+    For both mutexes and sync locks, performance tends to increase with the number of list partitions. For the given 
+    tests, this makes sense as more lists means that the contention for locks is spread out. Threads therefore do not 
+    have to wait for one centralized lock as different threads will be trying to access different locks.
+
+    Yes, throughput will continue to increase as we increase the number of lists. As we increase the number of 
+    lists, it means that the contention for resources is spread out among an increasing number of locks and lists, 
+    so the wait time to access locks and critical sections continues to go down, increasing throughout. While the
+    throughput will increase as we increase the number of lists, as there will be less contention for resources and
+    locks, it will tend to flatten out/stop increasing at some point(reach a threshold). This point where throughput flattens out is
+    where each sub list only has one element or is empty. Performance stops increasing at this point because no threads will have
+    to wait for another thread before they can access that particular sublist, and there is no way to further speed up
+    performance as one item per sublist(bucket) is the optimal functionality of this implementation. 
+
+    This suggestion seems reasonable. The throughput of a N-way should be similar to a single list with fewer (1/N) threads as the graphs
+    of both seem to be somewhat similar. They have similar curves and shapes, suggesting that both of these might have similar 
+    throughput.
